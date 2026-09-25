@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register — Notebook</title>
+<link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+  <div class="auth-screen">
+    <form class="card" id="register-form" novalidate>
+      <p class="card-mark">notebook</p>
+      <h1>Create your account</h1>
+
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8">
+      </div>
+
+      <p class="form-message" id="message" role="status" aria-live="polite"></p>
+
+      <button class="btn-primary" type="submit" id="submit-btn">Create account</button>
+
+      <p class="switch-line">Already have an account? <a href="login.html">Log in</a></p>
+    </form>
+  </div>
+
+  <script src="../services/api.js"></script>
+  <script>
+    const form = document.getElementById('register-form');
+    const messageEl = document.getElementById('message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function setMessage(text, kind) {
+      messageEl.textContent = text || '';
+      messageEl.className = 'form-message' + (kind ? ' ' + kind : '');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = form.username.value.trim();
+      const password = form.password.value;
+
+      if (!username || !password) {
+        setMessage('Enter a username and password.', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        setMessage('Password needs at least 8 characters.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setMessage('Creating your account…');
+
+      try {
+        await Api.register(username, password);
+        setMessage('Account created. Redirecting to login…', 'ok');
+        setTimeout(() => { window.location.href = 'login.html'; }, 700);
+      } catch (err) {
+        setMessage(err.message, 'error');
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

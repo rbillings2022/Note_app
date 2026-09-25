@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notebook</title>
+<link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+  <div class="note-screen">
+    <header class="note-header">
+      <span class="brand">notebook</span>
+      <div class="actions">
+        <span class="status" id="status"></span>
+        <button class="btn-ghost" id="logout-btn" type="button">Log out</button>
+      </div>
+    </header>
+
+    <div class="note-body">
+      <textarea id="note" placeholder="Start typing…" spellcheck="true"></textarea>
+    </div>
+
+    <footer class="note-footer">
+      <button class="btn-save" id="save-btn" type="button">Save note</button>
+    </footer>
+  </div>
+
+  <script src="../services/api.js"></script>
+  <script>
+    const noteEl = document.getElementById('note');
+    const statusEl = document.getElementById('status');
+    const saveBtn = document.getElementById('save-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    let lastSaved = '';
+
+    function setStatus(text, kind) {
+      statusEl.textContent = text || '';
+      statusEl.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    // If the backend rejects an unauthenticated request, send the
+    // person back to the login page rather than showing a blank note.
+    function handleAuthFailure(err) {
+      if (/401|unauthor/i.test(err.message)) {
+        window.location.href = 'login.html';
+        return true;
+      }
+      return false;
+    }
+
+    async function loadNote() {
+      setStatus('Loading…');
+      try {
+        const data = await Api.loadNote();
+        const content = (data && data.content) || '';
+        noteEl.value = content;
+        lastSaved = content;
+        setStatus('');
+      } catch (err) {
+        if (handleAuthFailure(err)) return;
+        setStatus('Could not load your note.', 'error');
+      }
+    }
+
+    async function saveNote() {
+      const content = noteEl.value;
+      saveBtn.disabled = true;
+      setStatus('Saving…', 'saving');
+      try {
+        await Api.saveNote(content);
+        lastSaved = content;
+        setStatus('Saved', 'saved');
+      } catch (err) {
+        saveBtn.disabled = false;
+        if (handleAuthFailure(err)) return;
+        setStatus('Could not save.', 'error');
+        return;
+      }
+      saveBtn.disabled = false;
+    }
+
+    saveBtn.addEventListener('click', saveNote);
+
+    // Ctrl/Cmd + S also saves, since this is a notes app.
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        saveNote();
+      }
+    });
+
+    // Warn before leaving with unsaved changes.
+    window.addEventListener('beforeunload', (e) => {
+      if (noteEl.value !== lastSaved) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      logoutBtn.disabled = true;
+      try {
+        await Api.logout();
+      } catch (err) {
+        // Even if logout fails server-side, still send them to login.
+      }
+      window.location.href = 'login.html';
+    });
+
+    loadNote();
+  </script>
+</body>
+</html>

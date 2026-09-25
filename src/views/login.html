@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — Notebook</title>
+<link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+  <div class="auth-screen">
+    <form class="card" id="login-form" novalidate>
+      <p class="card-mark">notebook</p>
+      <h1>Log in</h1>
+
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+
+      <p class="form-message" id="message" role="status" aria-live="polite"></p>
+
+      <button class="btn-primary" type="submit" id="submit-btn">Log in</button>
+
+      <p class="switch-line">New here? <a href="register.html">Create an account</a></p>
+    </form>
+  </div>
+
+  <script src="../services/api.js"></script>
+  <script>
+    const form = document.getElementById('login-form');
+    const messageEl = document.getElementById('message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function setMessage(text, kind) {
+      messageEl.textContent = text || '';
+      messageEl.className = 'form-message' + (kind ? ' ' + kind : '');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = form.username.value.trim();
+      const password = form.password.value;
+
+      if (!username || !password) {
+        setMessage('Enter your username and password.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setMessage('Logging in…');
+
+      try {
+        await Api.login(username, password);
+        window.location.href = 'note.html';
+      } catch (err) {
+        setMessage(err.message, 'error');
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

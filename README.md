@@ -1,2 +1,2 @@
-# Risk_rating
-Gives a risk percentage based on data uploaded
+# Note tasking app
+- A aimple app where you can write a note and save that text.
