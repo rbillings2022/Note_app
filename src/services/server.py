@@ -33,6 +33,8 @@ from fastapi import Cookie, FastAPI, HTTPException, Response
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
+from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 
 from schema import get_connection, init_db
 
@@ -204,6 +206,10 @@ def save_note(
 # "/" redirect below are matched first, and everything else (login.html,
 # note.html, styles.css, api.js) falls through to the static mount.
 # ---------------------------------------------------------------------------
+@app.get("/api.js")
+def serve_api_js():
+    return FileResponse(Path(__file__).parent / "api.js")
+
 @app.get("/")
 def root():
     return RedirectResponse(url="/login.html")
