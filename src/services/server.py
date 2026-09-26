@@ -40,7 +40,9 @@ from schema import get_connection, init_db
 # Setup
 # ---------------------------------------------------------------------------
 
-FRONTEND_DIR = Path(__file__).parent / "frontend"
+# server.py lives in src/services/, so .parent.parent gets to src/
+VIEWS_DIR = Path(__file__).parent.parent / "views"
+STYLES_DIR = Path(__file__).parent.parent / "styles"
 SESSION_COOKIE = "session_id"
 
 app = FastAPI(title="Notebook API")
