@@ -204,10 +204,18 @@ def save_note(
 # "/" redirect below are matched first, and everything else (login.html,
 # note.html, styles.css, api.js) falls through to the static mount.
 # ---------------------------------------------------------------------------
-
 @app.get("/")
 def root():
     return RedirectResponse(url="/login.html")
 
 app.mount("/styles", StaticFiles(directory=STYLES_DIR), name="styles")
 app.mount("/", StaticFiles(directory=VIEWS_DIR, html=True), name="views")
+
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    init_db()  # safety net in case schema.py was never run directly
+    uvicorn.run(app, host="127.0.0.1", port=8000)
