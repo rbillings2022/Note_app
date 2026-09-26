@@ -209,14 +209,5 @@ def save_note(
 def root():
     return RedirectResponse(url="/login.html")
 
-
-app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
-
-
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    init_db()  # safety net in case schema.py was never run directly
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+app.mount("/styles", StaticFiles(directory=STYLES_DIR), name="styles")
+app.mount("/", StaticFiles(directory=VIEWS_DIR, html=True), name="views")
