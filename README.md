@@ -51,7 +51,7 @@ python server.py
 
 You should see:
 
-Open **http://127.0.0.1:8000** in your browser — it will redirect you to the registration/login page.
+Open **http://127.0.0.1:8000** in your browser.
 
 ### Stopping the server
 Press `Ctrl+C` in the terminal.
