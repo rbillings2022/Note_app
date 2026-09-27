@@ -6,8 +6,7 @@
    ============================================ */
 
 const Api = (() => {
-  const BASE_URL = 'https://noteapp-xxxx.onrender.com'; // ← replace with your real Render URL
-  async function request(path, options = {}) {
+  const BASE_URL = 'https://note-app-bqbt.onrender.com';  async function request(path, options = {}) {
     let response;
     try {
       response = await fetch(BASE_URL + path, {

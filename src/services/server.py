@@ -33,7 +33,6 @@ from fastapi import Cookie, FastAPI, HTTPException, Response
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
-from fastapi.responses import FileResponse
 from fastapi.responses import FileResponse, RedirectResponse
 
 from schema import get_connection, init_db
@@ -56,8 +55,6 @@ app.add_middleware(
 VIEWS_DIR = Path(__file__).parent.parent / "views"
 STYLES_DIR = Path(__file__).parent.parent / "styles"
 SESSION_COOKIE = "session_id"
-
-app = FastAPI(title="Notebook API")
 
 # In-memory session store: {session_id: user_id}.
 SESSIONS: dict[str, int] = {}
