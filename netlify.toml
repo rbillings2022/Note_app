@@ -1,0 +1,17 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/"
+  to = "/src/views/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/styles/*"
+  to = "/src/styles/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api.js"
+  to = "/src/services/api.js"
+  status = 200

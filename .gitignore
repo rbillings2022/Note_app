@@ -1,5 +1,4 @@
 .dist/
-requirements.txt
 
 # Virtual env
 noteapp-env/
