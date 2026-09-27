@@ -39,7 +39,7 @@ from fastapi.responses import FileResponse, RedirectResponse
 from schema import get_connection, init_db
 
 from fastapi.middleware.cors import CORSMiddleware
-
+app = FastAPI(title="Notebook API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://astounding-paprenjak-31006d.netlify.app"],  # your real Netlify URL, no trailing slash
