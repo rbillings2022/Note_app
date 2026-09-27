@@ -41,12 +41,12 @@ pip install -r requirements.txt
 ### 4. Initialize the database
 Run this once to create `notebook.db` with the required tables:
 ```bash
-python src/services/schema.py
+python schema.py
 ```
 
-### 5. Run the app
+### 5. Run the server/app
 ```bash
-python src/services/server.py
+python server.py
 ```
 
 You should see:
