@@ -1,8 +1,8 @@
 # Name: Romario Billings
 # Description
 ## Live Demo
+- Youtube Video: [Youtube Demo](https://youtu.be/eSz3ZzoPpH8)
 - Frontend: https://[thenotapp.netlify.app](https://thenotapp.netlify.app/src/views/register.html)
-- Backend API: [https://note-app-bqbt.onrender.com](https://note-app-bqbt.onrender.com)
 ## Note tasking app
 - A simple app where you can write a note and save/load that text.
 ## Setup
